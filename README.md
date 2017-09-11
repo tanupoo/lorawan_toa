@@ -12,6 +12,9 @@ This script refers to the section 4.1.1.6. LoRa Packet Structure,
         bw: bandwidth. default is 125 kHz.
         de: low data optimization. default is 0.
 
+    % python lorawan_toa.py 12 64 500
+    616.448 (ms)
+
 ## graph_as923.py
 
     It makes a set of figures about Time on Air and PHYPayload size,
