@@ -17,4 +17,5 @@ This script refers to the section 4.1.1.6. LoRaTM Packet Structure,
     It makes a set of figures about Time on Air and PHYPayload size,
     especially AS923 using matlib like below.
 
-[lora_toa.png]
+![LoRa ToA](lora_toa.png)
+
