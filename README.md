@@ -2,7 +2,7 @@ lorawan_toa
 ===========
 
 The time on air calculator of LoRa in Python.
-This script refers to the section 4.1.1.6. LoRaTM Packet Structure,
+This script refers to the section 4.1.1.6. LoRa Packet Structure,
 [SX1276/77/78/79 Datasheet][http://www.semtech.com/images/datasheet/sx1276_77_78_79.pdf].
 
 ## Usage
@@ -15,7 +15,7 @@ This script refers to the section 4.1.1.6. LoRaTM Packet Structure,
 ## graph_as923.py
 
     It makes a set of figures about Time on Air and PHYPayload size,
-    especially AS923 using matlib like below.
+    especially LoRaWAN AS923 using matlib like below.
 
 ![LoRa ToA](lora_toa.png)
 
