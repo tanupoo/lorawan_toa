@@ -95,14 +95,15 @@ if __name__ == "__main__" :
                       disable_h=opt.v_h, n_cr=opt.n_cr,
                       n_preamble=opt.n_preamble)
     if opt.f_verbose:
-        print "PHY payload size  : %d Bytes" % opt.n_size
-        print "MAC payload size  : %d Bytes" % (opt.n_size-5)
-        print "Spreading Factor  : %d" % opt.n_sf
-        print "Band width        : %d kHz" % opt.n_bw
-        print "Low data rate opt.: %s" % ("enable" if opt.v_de else "disable")
-        print "Explicit header   : %s" % ("disable" if opt.v_h else "enable")
-        print "CR (coding rate)  : %d (4/%d)" % (opt.n_cr, 4+opt.n_cr)
-        print "Preamble size     : %d symbols" % opt.n_preamble
-        print "Time on Air       : %.3f msec" % t_frame
+        print "PHY payload size    : %d Bytes" % opt.n_size
+        print "MAC payload size    : %d Bytes" % (opt.n_size-5)
+        print "Spreading Factor    : %d" % opt.n_sf
+        print "Band width          : %d kHz" % opt.n_bw
+        print "Low data rate opt.  : %s" % ("enable" if opt.v_de else "disable")
+        print "Explicit header     : %s" % ("disable" if opt.v_h else "enable")
+        print "CR (coding rate)    : %d (4/%d)" % (opt.n_cr, 4+opt.n_cr)
+        print "Preamble size       : %d symbols" % opt.n_preamble
+        print "Time on Air         : %.3f msec" % t_frame
+        print "MAC frame data rate : %.3f bps" % (opt.n_size-5 / t_frame)
     else:
         print "%.3f" % t_frame

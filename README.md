@@ -33,16 +33,21 @@ The default value is aligned to LoRaWAN AS923.
 
 ## Examples
 
-    % python lorawan_toa.py -v 12 64
-    PHY payload size  : 64 Bytes
-    MAC payload size  : 59 Bytes
-    Spreading Factor  : 12
-    Band width        : 125 kHz
-    Low data rate opt.: enable
-    Explicit header   : enable
-    CR (coding rate)  : 1 (4/5)
-    Preamble size     : 8 symbols
-    Time on Air       : 2793.472 msec
+with the -v option, it shows the ToA as well as the related information.
+
+    % python lorawan_toa.py 12 64 -v
+    PHY payload size    : 64 Bytes
+    MAC payload size    : 59 Bytes
+    Spreading Factor    : 12
+    Band width          : 125 kHz
+    Low data rate opt.  : enable
+    Explicit header     : enable
+    CR (coding rate)    : 1 (4/5)
+    Preamble size       : 8 symbols
+    Time on Air         : 2793.472 msec
+    MAC frame data rate : 63.998 bps
+
+without the -v option, it simply shows the ToA.
 
     % python lorawan_toa.py --band-width=500 7 128    
     71.744
