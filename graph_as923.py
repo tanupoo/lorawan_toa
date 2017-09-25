@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from lorawan_toa import *
 
 def get_line(list_size, n_sf, bw=125):
-    return [ get_toa(i, n_sf, bw=bw) for i in list_size ]
+    return [ get_toa(i, n_sf, n_bw=bw) for i in list_size ]
 
 '''
 test code
