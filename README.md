@@ -5,6 +5,8 @@ A calculator of the time on air of LoRa PHY frame in Python.
 This script refers to the section 4.1.1.6. LoRa Packet Structure,
 [SX1276/77/78/79 Datasheet][http://www.semtech.com/images/datasheet/sx1276_77_78_79.pdf].
 
+The default value is aligned to LoRaWAN AS923.
+
 ## Usage
 
     lorawan_toa.py [-h] [--band-width N_BW] [--disable-dro] [--disable-eh]
