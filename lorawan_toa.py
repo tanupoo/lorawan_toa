@@ -18,6 +18,7 @@ def mpsrange(a, b):
 def get_toa(n_size, n_sf, n_bw=125, enable_dro=1, disable_h=0, n_cr=1,
             n_preamble=8):
     '''
+    return the time on air in milisecond.
     n_size:
         PL in the fomula.  PHY Payload size in byte (= MAC Payload + 5)
     n_sf: SF (12 to 7)
@@ -44,11 +45,20 @@ def get_toa(n_size, n_sf, n_bw=125, enable_dro=1, disable_h=0, n_cr=1,
     t_preamble = (n_preamble + 4.25) * t_sym
     a = 8.*n_size - 4.*n_sf + 28 + 16 - 20.*disable_h
     b = 4.*(n_sf-2.*enable_dro)
+    v_ceil = a/b
     nb_sym_payload = 8 + max(math.ceil(a/b)*(n_cr+4), 0)
     t_payload = nb_sym_payload * t_sym
     t_frame = t_preamble+ t_payload
 
-    return round(t_frame, 3)
+    ret = {}
+    ret["t_sym"] = t_sym
+    ret["t_preamble"] = t_preamble
+    ret["v_ceil"] = v_ceil
+    ret["nb_sym_payload"] = nb_sym_payload
+    ret["t_payload"] = t_payload
+    ret["t_frame"] = round(t_frame, 3)
+
+    return ret
 
 if __name__ == "__main__" :
     import sys
@@ -90,10 +100,10 @@ if __name__ == "__main__" :
     # main
     #
     opt = parse_args()
-    t_frame = get_toa(opt.n_size, opt.n_sf,
-                      n_bw=opt.n_bw, enable_dro=opt.v_de,
-                      disable_h=opt.v_h, n_cr=opt.n_cr,
-                      n_preamble=opt.n_preamble)
+    ret = get_toa(opt.n_size, opt.n_sf, n_bw=opt.n_bw, enable_dro=opt.v_de,
+                  disable_h=opt.v_h, n_cr=opt.n_cr, n_preamble=opt.n_preamble)
+    ret0 = get_toa(0, opt.n_sf, n_bw=opt.n_bw, enable_dro=opt.v_de,
+                   disable_h=opt.v_h, n_cr=opt.n_cr, n_preamble=opt.n_preamble)
     if opt.f_verbose:
         print "PHY payload size    : %d Bytes" % opt.n_size
         print "MAC payload size    : %d Bytes" % (opt.n_size-5)
@@ -103,7 +113,14 @@ if __name__ == "__main__" :
         print "Explicit header     : %s" % ("disable" if opt.v_h else "enable")
         print "CR (coding rate)    : %d (4/%d)" % (opt.n_cr, 4+opt.n_cr)
         print "Preamble size       : %d symbols" % opt.n_preamble
-        print "Time on Air         : %.3f msec" % t_frame
-        print "MAC frame data rate : %.3f bps" % (opt.n_size-5 / t_frame)
+        print "Other symbol size   : %d symbols" % ret["nb_sym_payload"]
+        print "Symbol Time         : %.3f msec" % ret["t_sym"]
+        print "Preamble ToA        : %.3f msec" % ret["t_preamble"]
+        print "Payload ToA         : %.3f msec" % ret["t_payload"]
+        print "Time on Air         : %.3f msec" % ret["t_frame"]
+        if opt.debug_level:
+            print "MAC frame data rate : %.3f bps" % ((8.*(opt.n_size-5)) /
+                                    ((ret["t_frame"]-ret0["t_frame"])/1000.))
+            print "Ceil(x)             : %.3f" % ret["v_ceil"]
     else:
-        print "%.3f" % t_frame
+        print "%.3f" % ret["t_frame"]
