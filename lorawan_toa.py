@@ -15,24 +15,32 @@ def mpsrange(a, b):
     b += 6  # MHDR + MIC + 1
     return range(a, b)
 
-def get_toa(n_size, n_sf, n_bw=125, enable_dro=1, disable_h=0, n_cr=1,
-            n_preamble=8):
+def get_toa(n_size, n_sf, n_bw=125, enable_auto_ldro=True, enable_ldro=False,
+            enable_eh=True, enable_crc=True, n_cr=1, n_preamble=8):
     '''
     Parameters:
         n_size:
             PL in the fomula.  PHY Payload size in byte (= MAC Payload + 5)
         n_sf: SF (12 to 7)
         n_bw: Bandwidth in kHz.  default is 125 kHz for AS923.
-        enable_dro:
-            DE in the fomula.
-            1 when the low data rate optimization is enabled.
-            0 for disabled.
-            LoRaWAN always use the low data optimization.
-        disable_eh:
-            IH in the fomula.
-            0 when the explicit header is enabled.
-            1 when no header is present.
-            LoRaWAN always use the header.
+        enable_auto_ldro
+            flag whether the auto Low Data Rate Optimization is enabled or not.
+            default is True.
+        enable_ldro:
+            if enable_auto_ldro is disabled, LDRO is disable by default,
+            which means that DE in the fomula is going to be 0.
+            When enable_ldro is set to True, DE is going to be 1.
+            LoRaWAN specification does not specify the usage.
+            SX1276 datasheet reuiqres to enable LDRO
+            when the symbol duration exceeds 16ms.
+        enable_eh:
+            when enable_eh is set to False, IH in the fomula is going to be 1.
+            default is True, which means IH is 0.
+            LoRaWAN always enables the explicit header.
+        enable_crc:
+            when enable_crc is set to False, CRC in the fomula is going to be 0.
+            The downlink stream doesn't use the CRC in the LoRaWAN spec.
+            default is True to calculate ToA for the uplink stream.
         n_cr:
             CR in the fomula, should be from 1 to 4.
             Coding Rate = (n_cr/(n_cr+1)).
@@ -53,8 +61,24 @@ def get_toa(n_size, n_sf, n_bw=125, enable_dro=1, disable_h=0, n_cr=1,
     r_sym = (n_bw*1000.) / math.pow(2,n_sf)
     t_sym = 1000. / r_sym
     t_preamble = (n_preamble + 4.25) * t_sym
-    a = 8.*n_size - 4.*n_sf + 28 + 16 - 20.*disable_h
-    b = 4.*(n_sf-2.*enable_dro)
+    # LDRO
+    v_DE = 0
+    if enable_auto_ldro:
+        if t_sym >= 16:
+            v_DE = 1
+    elif enable_ldro:
+        v_DE = 1
+    # IH
+    v_IH = 0
+    if not enable_eh:
+        v_IH = 1
+    # CRC
+    v_CRC = 1
+    if enable_crc == False:
+        v_CRC = 0
+    #
+    a = 8.*n_size - 4.*n_sf + 28 + 16*v_CRC - 20.*v_IH
+    b = 4.*(n_sf-2.*v_DE)
     v_ceil = a/b
     n_payload = 8 + max(math.ceil(a/b)*(n_cr+4), 0)
     t_payload = n_payload * t_sym
@@ -65,6 +89,7 @@ def get_toa(n_size, n_sf, n_bw=125, enable_dro=1, disable_h=0, n_cr=1,
     ret["t_sym"] = t_sym
     ret["n_preamble"] = n_preamble
     ret["t_preamble"] = t_preamble
+    ret["v_DE"] = v_DE
     ret["v_ceil"] = v_ceil
     ret["n_payload"] = n_payload
     ret["t_payload"] = t_payload
@@ -87,12 +112,17 @@ if __name__ == "__main__" :
         p.add_argument("--band-width", action="store", dest="n_bw", type=int,
             default=125,
             help="bandwidth in kHz. default is 125 kHz.")
-        p.add_argument("--disable-dro", action="store_const", dest="v_de",
-            const=0, default=1,
-            help="disable the low data rate optimization. default is enable as LoRaWAN does.")
-        p.add_argument("--disable-eh", action="store_const", dest="v_h",
-            const=1, default=0,
-            help="disable the explicit header.  default is enable as LoRaWAN does.")
+        p.add_argument("--disable-auto-ldro", action="store_false",
+            dest="enable_auto_ldro",
+            help="disable the auto LDRO and disable LDRO.")
+        p.add_argument("--enable-ldro", action="store_true", dest="enable_ldro",
+            help="This option is available when the auto LDRO is disabled.")
+        p.add_argument("--disable-eh", action="store_false", dest="enable_eh",
+            help="disable the explicit header.")
+        p.add_argument("--downlink", action="store_false", dest="enable_crc",
+            help="disable the CRC field, which is for the LoRaWAN downlink stream.")
+        p.add_argument("--disable-crc", action="store_false", dest="enable_crc",
+            help="same effect as the --downlink option.")
         p.add_argument("--cr", action="store", dest="n_cr", type=int, default=1,
             help="specify the CR value. default is 1 as LoRaWAN does.")
         p.add_argument("--preamble", action="store", dest="n_preamble",
@@ -105,6 +135,8 @@ if __name__ == "__main__" :
             const=1, help="increase debug mode.")
     
         args = p.parse_args()
+
+        args.v_de = False
         args.debug_level = len(args._f_debug)
         return args
 
@@ -112,15 +144,20 @@ if __name__ == "__main__" :
     # main
     #
     opt = parse_args()
-    ret = get_toa(opt.n_size, opt.n_sf, n_bw=opt.n_bw, enable_dro=opt.v_de,
-                  disable_h=opt.v_h, n_cr=opt.n_cr, n_preamble=opt.n_preamble)
+    ret = get_toa(opt.n_size, opt.n_sf, n_bw=opt.n_bw,
+                  enable_auto_ldro=opt.enable_auto_ldro,
+                  enable_ldro=opt.enable_ldro,
+                  enable_eh=opt.enable_eh, enable_crc=opt.enable_crc,
+                  n_cr=opt.n_cr, n_preamble=opt.n_preamble)
     if opt.f_verbose:
         print "PHY payload size    : %d Bytes" % opt.n_size
         print "MAC payload size    : %d Bytes" % (opt.n_size-5)
         print "Spreading Factor    : %d" % opt.n_sf
         print "Band width          : %d kHz" % opt.n_bw
-        print "Low data rate opt.  : %s" % ("enable" if opt.v_de else "disable")
-        print "Explicit header     : %s" % ("disable" if opt.v_h else "enable")
+        print "Low data rate opt.  : %s" % ("enable" if ret["v_DE"]
+                                            else "disable")
+        print "Explicit header     : %s" % ("enable" if opt.enable_eh
+                                            else "disable")
         print "CR (coding rate)    : %d (4/%d)" % (opt.n_cr, 4+opt.n_cr)
         print "Symbol Rate         : %.3f symbol/s" % ret["r_sym"]
         print "Symbol Time         : %.3f msec/symbol" % ret["t_sym"]
@@ -131,7 +168,9 @@ if __name__ == "__main__" :
         print "Time on Air         : %.3f msec" % ret["t_packet"]
         if opt.debug_level:
             ret0 = get_toa(0, opt.n_sf, n_bw=opt.n_bw,
-                           enable_dro=opt.v_de, disable_h=opt.v_h,
+                           enable_auto_ldro=opt.enable_auto_ldro,
+                           enable_ldro=opt.enable_ldro,
+                           enable_eh=opt.enable_eh, enable_crc=opt.enable_crc,
                            n_cr=opt.n_cr, n_preamble=opt.n_preamble)
             print "PHY PL=0 ToA        : %.3f msec" % (ret0["t_packet"])
             # preamble=8 cr=1? payload-len=7? crc=16 (payload) payload-crc=16
