@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 from lorawan_toa import *
 
 def get_line(list_size, n_sf, bw=125):
-    return [ get_toa(i, n_sf, n_bw=bw) for i in list_size ]
+    return [ get_toa(i, n_sf, n_bw=bw)["t_packet"] for i in list_size ]
 
 '''
 test code
@@ -22,7 +22,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("SF and ToA (BW=125 kHz)")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", label="SF12", linewidth=3, alpha=1)
 plt.plot(x, get_line(x, 11), "g-", label="SF11", linewidth=3, alpha=1)
 plt.plot(x, get_line(x, 10), "k-", label="SF10", linewidth=3, alpha=1)
@@ -46,7 +46,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("AS923 No DwellTime")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 11), "g-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10), "k-", linewidth=3, alpha=0.05)
@@ -84,7 +84,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("AS923 DwellTime 400ms")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 11), "g-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10), "k-", linewidth=3, alpha=0.05)
@@ -100,7 +100,7 @@ plt.plot(mpsrange(8, 61), get_line(mpsrange(8, 61), 9), "c-", label="SF9", linew
 plt.plot(mpsrange(8, 133), get_line(mpsrange(8, 133), 8), "m-", label="SF8", linewidth=3, alpha=1)
 plt.plot(mpsrange(8, 250), get_line(mpsrange(8, 250), 7), "y-", label="SF7", linewidth=3, alpha=1)
 
-plt.plot(x, [400 for i in range(0, 300)], "r,", linewidth=1, alpha=0.7)
+plt.plot(x, [400 for i in range(0, 255)], "r,", linewidth=1, alpha=0.7)
 
 plt.xlabel("PHY Payload Size (Byte)")
 plt.ylabel("Time on Air (ms)")
@@ -118,7 +118,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("AS923")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 11), "g-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10), "k-", linewidth=3, alpha=0.05)
@@ -164,7 +164,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("AS923 and ARIB STD-T108")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 11), "g-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10), "k-", linewidth=3, alpha=0.05)
@@ -194,9 +194,9 @@ plt.plot(mpsrange(8, 250), get_line(mpsrange(8, 250), 7), "y-",
 plt.plot(mpsrange(8, 250), get_line(mpsrange(8, 250), 7, bw=250), "b--",
          label="SF7/250kHz", linewidth=3, alpha=0.5)
 
-plt.plot(x, [400 for i in range(0, 300)], "r--", linewidth=2, alpha=0.7)
-plt.plot(x, [200 for i in range(0, 300)], "r--", linewidth=2, alpha=0.7)
-plt.plot(x, [4000 for i in range(0, 300)], "r--", linewidth=2, alpha=0.7)
+plt.plot(x, [400 for i in range(0, 255)], "r--", linewidth=2, alpha=0.7)
+plt.plot(x, [200 for i in range(0, 255)], "r--", linewidth=2, alpha=0.7)
+plt.plot(x, [4000 for i in range(0, 255)], "r--", linewidth=2, alpha=0.7)
 
 plt.xlabel("PHY Payload Size (Byte)")
 plt.ylabel("Time on Air (ms)")
@@ -214,7 +214,7 @@ plt.title("AS923 vs Others (SF12)")
 
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 12, bw=500), "r-", linewidth=3, alpha=0.05)
 
@@ -242,7 +242,7 @@ plt.title("AS923 vs Others (SF10)")
 
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 10), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10, bw=500), "r-", linewidth=3, alpha=0.05)
 
@@ -270,7 +270,7 @@ plt.figure(num=None, figsize=(16, 8), facecolor='w', edgecolor='k')
 plt.title("LoRaWAN")
 plt.ylim(0, 5000)
 
-x = range(0, 300)
+x = range(0, 255)
 plt.plot(x, get_line(x, 12), "b-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 11), "g-", linewidth=3, alpha=0.05)
 plt.plot(x, get_line(x, 10), "k-", linewidth=3, alpha=0.05)
