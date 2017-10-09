@@ -177,7 +177,7 @@ if __name__ == "__main__" :
             # =? 48 ==> 6 bytes ?
             t0 = (ret["t_packet"]-ret0["t_packet"])/1000.
             print "PHY fr.dr.(48b) 7:15: %.3f bps" % ((8.*opt.n_size+48)/t0)
-            print "MAC frame DR        : %.3f bps" % ((8.*(opt.n_size)) /t0)
-            print "Ceil(x)             : %.3f" % ret["v_ceil"]
+            print "MAC frame DR        : %.3f bps" % ((8.*(opt.n_size))/t0)
+            print "before ceil(x)      : %.3f" % ret["v_ceil"]
     else:
         print "%.3f" % ret["t_packet"]
