@@ -4,7 +4,7 @@ LoRa Time on Air calculator
 A calculator of the time on air of LoRa PHY frame in Python.
 
 This script refers to the section 4.1.1.6. LoRa Packet Structure,
-[SX1276/77/78/79 Datasheet][http://www.semtech.com/images/datasheet/sx1276_77_78_79.pdf].
+[SX1276/77/78/79 Datasheet rev.5][http://www.semtech.com/images/datasheet/sx1276.pdf].
 
 The default parameters of the equation is based on LoRaWAN AS923
 in the LoRaWAN regional parameters v1.1.
