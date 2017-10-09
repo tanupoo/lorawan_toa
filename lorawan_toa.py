@@ -64,7 +64,7 @@ def get_toa(n_size, n_sf, n_bw=125, enable_auto_ldro=True, enable_ldro=False,
     # LDRO
     v_DE = 0
     if enable_auto_ldro:
-        if t_sym >= 16:
+        if t_sym > 16:
             v_DE = 1
     elif enable_ldro:
         v_DE = 1
