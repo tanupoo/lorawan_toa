@@ -110,7 +110,7 @@ if __name__ == "__main__" :
         p.add_argument("n_size", metavar="SIZE", type=int,
             help="PHY payload size in byte. It's equal to the MAC payload + 5.")
         p.add_argument("--band-width", action="store", dest="n_bw", type=int,
-            default=125,
+            default=125, metavar="NUMBER",
             help="bandwidth in kHz. default is 125 kHz.")
         p.add_argument("--disable-auto-ldro", action="store_false",
             dest="enable_auto_ldro",
@@ -123,14 +123,15 @@ if __name__ == "__main__" :
             help="disable the CRC field, which is for the LoRaWAN downlink stream.")
         p.add_argument("--disable-crc", action="store_false", dest="enable_crc",
             help="same effect as the --downlink option.")
-        p.add_argument("--cr", action="store", dest="n_cr", type=int, default=1,
+        p.add_argument("--cr", action="store", dest="n_cr",
+            type=int, default=1, metavar="NUMBER",
             help="specify the CR value. default is 1 as LoRaWAN does.")
         p.add_argument("--preamble", action="store", dest="n_preamble",
-            type=int, default=8,
+            type=int, default=8, metavar="NUMBER",
             help="specify the preamble. default is 8 for AS923.")
         p.add_argument("--duty-cycle", action="store", dest="n_dutycycle",
-            type=int, default=1,
-            help="specify the duty cycle in percentage. default is 1 %.")
+            type=int, default=1, metavar="NUMBER",
+            help="specify the duty cycle in percentage. default is 1 %%.")
         p.add_argument("-v", action="store_true", dest="f_verbose",
             default=False,
             help="enable verbose mode.")
