@@ -128,6 +128,9 @@ if __name__ == "__main__" :
         p.add_argument("--preamble", action="store", dest="n_preamble",
             type=int, default=8,
             help="specify the preamble. default is 8 for AS923.")
+        p.add_argument("--duty-cycle", action="store", dest="n_dutycycle",
+            type=int, default=1,
+            help="specify the duty cycle in percentage. default is 1 %.")
         p.add_argument("-v", action="store_true", dest="f_verbose",
             default=False,
             help="enable verbose mode.")
@@ -149,6 +152,7 @@ if __name__ == "__main__" :
                   enable_ldro=opt.enable_ldro,
                   enable_eh=opt.enable_eh, enable_crc=opt.enable_crc,
                   n_cr=opt.n_cr, n_preamble=opt.n_preamble)
+    max_packets = 86400./((ret["t_packet"]/1000.)*(100./opt.n_dutycycle))
     if opt.f_verbose:
         print "PHY payload size    : %d Bytes" % opt.n_size
         print "MAC payload size    : %d Bytes" % (opt.n_size-5)
@@ -166,6 +170,8 @@ if __name__ == "__main__" :
         print "Preamble ToA        : %.3f msec" % ret["t_preamble"]
         print "Payload ToA         : %.3f msec" % ret["t_payload"]
         print "Time on Air         : %.3f msec" % ret["t_packet"]
+        print "Duty Cycle          : %d %%" % opt.n_dutycycle
+        print "Max Frames per day  : %d frames" % max_packets
         if opt.debug_level:
             ret0 = get_toa(0, opt.n_sf, n_bw=opt.n_bw,
                            enable_auto_ldro=opt.enable_auto_ldro,
