@@ -21,15 +21,22 @@ def get_y_br(data_size, n_sf, n_bw=125):
     return [ (i*8)/(get_toa(i, n_sf, n_bw=n_bw)["t_packet"]/1000.)
             for i in data_size ]
 
-def get_y_br1(data_size, n_sf, n_bw=125):
+def get_y_br1(data_size, n_sf, n_bw=125,
+              enable_auto_ldro=True, enable_ldro=False):
     if type(data_size) == list:
         ret = []
         for i in data_size:
-            ret.append(get_y_br1(i, n_sf, n_bw=n_bw))
+            ret.append(get_y_br1(i, n_sf, n_bw=n_bw,
+                                 enable_auto_ldro=enable_auto_ldro,
+                                 enable_ldro=enable_ldro))
         return ret
     else:
-        toa0 = get_toa(0, n_sf, n_bw=n_bw)["t_packet"]
-        toa = get_toa(data_size, n_sf, n_bw=n_bw)["t_packet"]
+        toa0 = get_toa(0, n_sf, n_bw=n_bw,
+                       enable_auto_ldro=enable_auto_ldro,
+                       enable_ldro=enable_ldro)["t_packet"]
+        toa = get_toa(data_size, n_sf, n_bw=n_bw,
+                      enable_auto_ldro=enable_auto_ldro,
+                      enable_ldro=enable_ldro)["t_packet"]
         if toa == toa0:
             return 0
         else:
@@ -145,12 +152,16 @@ n_sf = 7
 lines += ax.plot(x_nb_bytes, get_y_toa(x_nb_bytes, n_sf), "k-", label="ToA")
 
 lines += ax2.plot(x_nb_bytes, [ 5468.75 for i in x_nb_bytes ],
-                  "r-", label="Equivalent BR.")
+                  "r-", label="Equivalent BR.", linewidth=2)
 
 lines += ax2.plot(x_nb_bytes, get_y_br(x_nb_bytes, n_sf),
                   "b-", label="Simple BR of PHY_PL/ToA")
 lines += ax2.plot(x_nb_bytes, get_y_br1(x_nb_bytes, n_sf),
-                  "y-", label="Cal. BR. PHY_PL/ToA DE=0")
+                  "y-", label="BR. PHY_PL/FixedToA auto LDRO")
+lines += ax2.plot(x_nb_bytes, get_y_br1(x_nb_bytes, n_sf,
+                                        enable_auto_ldro=False,
+                                        enable_ldro=True),
+                  "c-", label="BR. PHY_PL/FixedToA DE=1")
 
 ax2.axvline(12, color='k', linestyle='--', alpha=0.7)
 
