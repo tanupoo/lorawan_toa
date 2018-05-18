@@ -108,7 +108,8 @@ if __name__ == "__main__" :
         p.add_argument("n_sf", metavar="SF", type=int,
             help="Spreading Factor. It should be from 7 to 12.")
         p.add_argument("n_size", metavar="SIZE", type=int,
-            help="PHY payload size in byte. It's equal to the MAC payload + 5.")
+            help="""PHY payload size in byte. It's equal to the MAC payload + 5
+                       (MHDR + MIC). e.g. 23 as Join Request.""")
         p.add_argument("--band-width", action="store", dest="n_bw", type=int,
             default=125, metavar="NUMBER",
             help="bandwidth in kHz. default is 125 kHz.")
