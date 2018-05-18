@@ -180,7 +180,7 @@ if __name__ == "__main__" :
         print "Payload ToA         : %.3f msec" % ret["t_payload"]
         print "Time on Air         : %.3f msec" % ret["t_packet"]
         print "Duty Cycle          : %d %%" % ret["duty_cycle"]
-        print "Min span of a cycle : %d sec" % ret["t_cycle"]
+        print "Min span of a cycle : %.3f sec" % ret["t_cycle"]
         print "Max Frames per day  : %d frames" % ret["max_packets_day"]
         if opt.debug_level:
             ret0 = get_toa(0, opt.n_sf, n_bw=opt.n_bw,
