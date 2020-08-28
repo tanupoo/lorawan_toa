@@ -1,9 +1,9 @@
 LoRa/LoRaWAN Time on Air calculator
 ===================================
 
-(28-Aug-2020) Python2 has sunset already.  For Python3, toa.py has been added.  Don't worry.  lorawan_toa.py is not changed for backward compatibility.
-
 A calculator of the time on air (ToA) of LoRa/LoRaWAN PHY frame in Python.
+
+(28-Aug-2020) Python2 has sunset already.  For Python3, toa.py has been added.  Don't worry.  lorawan_toa.py is not changed for backward compatibility.
 
 This script refers to the section 4.1.1.6. LoRa Packet Structure,
 [SX1276/77/78/79 Datasheet rev.5][http://www.semtech.com/images/datasheet/sx1276.pdf].
