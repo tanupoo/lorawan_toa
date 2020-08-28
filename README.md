@@ -1,7 +1,7 @@
 LoRa/LoRaWAN Time on Air calculator
 ===================================
 
-(28-Aug-2020) Python2 has sunset.  For Python3, toa.py has been added.  Don't worry.  lorawan_toa.py is not changed for backward compatibility.
+(28-Aug-2020) Python2 has sunset already.  For Python3, toa.py has been added.  Don't worry.  lorawan_toa.py is not changed for backward compatibility.
 
 A calculator of the time on air (ToA) of LoRa/LoRaWAN PHY frame in Python.
 
@@ -76,7 +76,7 @@ with the -v option, it shows the ToA as well as the related information.
 below example, it show detail information in SF 12, 64 bytes of PHY payload,
 125 kHz bandwidth, preamble 8.
 
-    % python lorawan_toa.py 12 64 -v
+    % python toa.py 12 64 -v
     PHY payload size    : 16 Bytes
     MAC payload size    : 11 Bytes
     Spreading Factor    : 7
@@ -97,7 +97,7 @@ below example, it show detail information in SF 12, 64 bytes of PHY payload,
 
 without the -v option, it simply shows the ToA.
 
-    % python lorawan_toa.py 12 64
+    % python toa.py 12 64
     2793.472
 
 ## graph_as923.py
