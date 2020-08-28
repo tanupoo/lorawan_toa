@@ -34,34 +34,39 @@ the --downlink option should be specified.
 
 ## Usage
 
-    lorawan_toa.py [-h] [--band-width NUMBER] [--disable-auto-ldro]
-                   [--enable-ldro] [--disable-eh] [--downlink]
-                   [--disable-crc] [--cr NUMBER] [--preamble NUMBER]
-                   [--duty-cycle NUMBER] [-v] [-d]
-                   SF SIZE
-    
-    LoRa Time on Air calculator.
-    
-    positional arguments:
-      SF                   Spreading Factor. It should be from 7 to 12.
-      SIZE                 PHY payload size in byte. It's equal to the MAC payload
-                           + 5.
-    
-    optional arguments:
-      -h, --help           show this help message and exit
-      --band-width NUMBER  bandwidth in kHz. default is 125 kHz.
-      --disable-auto-ldro  disable the auto LDRO and disable LDRO.
-      --enable-ldro        This option is available when the auto LDRO is
-                           disabled.
-      --disable-eh         disable the explicit header.
-      --downlink           disable the CRC field, which is for the LoRaWAN
-                           downlink stream.
-      --disable-crc        same effect as the --downlink option.
-      --cr NUMBER          specify the CR value. default is 1 as LoRaWAN does.
-      --preamble NUMBER    specify the preamble. default is 8 for AS923.
-      --duty-cycle NUMBER  specify the duty cycle in percentage. default is 1 %.
-      -v                   enable verbose mode.
-      -d                   increase debug mode.
+```
+usage: toa.py [-h] [--band-width NUMBER] [--disable-auto-ldro] [--enable-ldro]
+              [--disable-eh] [--downlink] [--disable-crc] [--cr NUMBER]
+              [--preamble NUMBER] [--duty-cycle NUMBER] [-v] [-d]
+              SF SIZE
+
+LoRa Time on Air calculator.
+
+positional arguments:
+  SF                   Spreading Factor. It should be from 7 to 12.
+  SIZE                 PHY payload size in byte. Remember that PHY payload
+                       (i.e. MAC frame) is consist of MHDR(1) + MAC payload +
+                       MIC(4), or MHDR(1) + FHDR(7) + FPort(1) + APP + MIC(4).
+                       For example, SIZE for Join Request is going to be 23.
+                       If the size of an application message (APP) is 12, SIZE
+                       is going to be 25.
+
+optional arguments:
+  -h, --help           show this help message and exit
+  --band-width NUMBER  bandwidth in kHz. default is 125 kHz.
+  --disable-auto-ldro  disable the auto LDRO and disable LDRO.
+  --enable-ldro        This option is available when the auto LDRO is
+                       disabled.
+  --disable-eh         disable the explicit header.
+  --downlink           disable the CRC field, which is for the LoRaWAN
+                       downlink stream.
+  --disable-crc        same effect as the --downlink option.
+  --cr NUMBER          specify the CR value. default is 1 as LoRaWAN does.
+  --preamble NUMBER    specify the preamble. default is 8 for AS923.
+  --duty-cycle NUMBER  specify the duty cycle in percentage. default is 1 %.
+  -v                   enable verbose mode.
+  -d                   increase debug mode.
+```
 
 ## Examples
 
@@ -100,4 +105,3 @@ without the -v option, it simply shows the ToA.
 
 ![LoRa ToA](image/as923-toa.png)
 
-##
