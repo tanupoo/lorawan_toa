@@ -47,7 +47,7 @@ LoRa Time on Air calculator.
 positional arguments:
   SF                   Spreading Factor. It should be from 7 to 12.
   SIZE                 PHY payload size in byte. Remember that PHY payload
-                       (i.e. MAC frame) is consist of MHDR(1) + MAC payload +
+                       (i.e. MAC frame) consists of MHDR(1) + MAC payload +
                        MIC(4), or MHDR(1) + FHDR(7) + FPort(1) + APP + MIC(4).
                        For example, SIZE for Join Request is going to be 23.
                        If the size of an application message (APP) is 12, SIZE
