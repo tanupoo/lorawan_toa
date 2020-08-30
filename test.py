@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from lorawan_toa import *
+from lorawan_toa_cal import get_toa
 import unittest
 
 class TestUM(unittest.TestCase):
