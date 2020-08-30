@@ -69,10 +69,6 @@ if __name__ == "__main__" :
     ret["duty_cycle"] = opt.n_duty_cycle
     ret["t_cycle"] = (ret["t_packet"]/1000.)*(100./ret["duty_cycle"])
     ret["max_packets_day"] = 86400./ret["t_cycle"]
-    ret["t_cycle_jp1"] = ret["t_packet"] + 50   # waiting time = 50 ms
-    ret["t_cycle_jp2"] = ret["t_packet"] + ret["t_packet"]*10   # duty = 10%
-    ret["datarate_jp1"] = (8*ret["mac_pl_size"])/(ret["t_cycle_jp1"]/1000.)
-    ret["datarate_jp2"] = (8*ret["mac_pl_size"])/(ret["t_cycle_jp2"]/1000.)
     if opt.f_verbose:
         print("PHY payload size    : %d Bytes" % ret["phy_pl_size"])
         print("MAC payload size    : %d Bytes" % ret["mac_pl_size"])
@@ -92,8 +88,6 @@ if __name__ == "__main__" :
         print("Min span of a cycle : %.3f sec" % ret["t_cycle"])
         print("Max Frames per day  : %d frames" % ret["max_packets_day"])
         if opt.debug_level:
-            print("Data rate (*1)      : %.3f bps" % ret["datarate_jp1"])
-            print("Data rate (*2)      : %.3f bps" % ret["datarate_jp2"])
             ret0 = get_toa(0, opt.n_sf, n_bw=opt.n_bw,
                            enable_auto_ldro=opt.enable_auto_ldro,
                            enable_ldro=opt.enable_ldro,
@@ -106,7 +100,5 @@ if __name__ == "__main__" :
             print("PHY fr.dr.(48b) 7:15: %.3f bps" % ((8.*opt.n_size+48)/t0))
             print("MAC frame DR        : %.3f bps" % ((8.*(opt.n_size))/t0))
             print("before ceil(x)      : %.3f" % ret["v_ceil"])
-            print("    (*1) data rate of MAC Payload in JP Ch 24-38 20mW.")
-            print("    (*2) data rate of MAC Payload in JP Ch 33-61 20mW.")
     else:
         print("%.3f" % ret["t_packet"])
