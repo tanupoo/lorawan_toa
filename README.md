@@ -76,29 +76,33 @@ with the -v option, it shows the ToA as well as the related information.
 below example, it show detail information in SF 12, 64 bytes of PHY payload,
 125 kHz bandwidth, preamble 8.
 
-    % python toa.py 12 64 -v
-    PHY payload size    : 16 Bytes
-    MAC payload size    : 11 Bytes
-    Spreading Factor    : 7
-    Band width          : 125 kHz
-    Low data rate opt.  : disable
-    Explicit header     : enable
-    CR (coding rate)    : 1 (4/5)
-    Symbol Rate         : 976.562 symbol/s
-    Symbol Time         : 1.024 msec/symbol
-    Preamble size       : 8 symbols
-    Packet symbol size  : 38 symbols
-    Preamble ToA        : 12.544 msec
-    Payload ToA         : 38.912 msec
-    Time on Air         : 51.456 msec
-    Duty Cycle          : 1 %
-    Min span of a cycle : 5 sec
-    Max Frames per day  : 16791 frames
+```
+% toa.py 12 64 -v
+PHY payload size    : 64 Bytes
+MAC payload size    : 59 Bytes
+Spreading Factor    : 12
+Band width          : 125 kHz
+Low data rate opt.  : enable
+Explicit header     : enable
+CR (coding rate)    : 1 (4/5)
+Symbol Rate         : 30.518 symbol/s
+Symbol Time         : 32.768 msec/symbol
+Preamble size       : 8 symbols
+Packet symbol size  : 73 symbols
+Preamble ToA        : 401.408 msec
+Payload ToA         : 2392.064 msec
+Time on Air         : 2793.472 msec
+Duty Cycle          : 1 %
+Min span of a cycle : 279.347 sec
+Max Frames per day  : 309 frames
+```
 
 without the -v option, it simply shows the ToA.
 
-    % python toa.py 12 64
-    2793.472
+```
+% python toa.py 12 64
+2793.472
+```
 
 ## graph_as923.py
 
