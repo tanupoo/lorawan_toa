@@ -2,6 +2,7 @@
 # http://www.semtech.com/images/datasheet/sx1276.pdf
 
 import math
+from argparse import ArgumentParser
 
 def mpsrange(a, b):
     '''
@@ -93,4 +94,59 @@ def get_toa(n_size, n_sf, n_bw=125, enable_auto_ldro=True, enable_ldro=False,
     ret["t_packet"] = round(t_packet, 3)
 
     return ret
+
+def parse_args():
+    p = ArgumentParser(description="LoRa Time on Air calculator.")
+    p.add_argument("sf", metavar="SF",
+        help="Spreading Factor. It should be from 7 to 12, or FSK")
+    p.add_argument("n_size", metavar="SIZE", type=int,
+        help="""PHY payload size in byte.
+                    Remember that PHY payload (i.e. MAC frame) consists of 
+                    MHDR(1) + MAC payload + MIC(4), or
+                    MHDR(1) + FHDR(7) + FPort(1) + APP + MIC(4).
+                    For example, SIZE for Join Request is going to be 23.
+                    If the size of an application message (APP) is
+                    12, SIZE is going to be 25. """)
+    p.add_argument("--band-width", action="store", dest="n_bw", type=int,
+        default=125, metavar="NUMBER",
+        help="bandwidth in kHz. default is 125 kHz.")
+    p.add_argument("--disable-auto-ldro", action="store_false",
+        dest="enable_auto_ldro",
+        help="disable the auto LDRO and disable LDRO.")
+    p.add_argument("--enable-ldro", action="store_true", dest="enable_ldro",
+        help="This option is available when the auto LDRO is disabled.")
+    p.add_argument("--disable-eh", action="store_false", dest="enable_eh",
+        help="disable the explicit header.")
+    p.add_argument("--downlink", action="store_false", dest="enable_crc",
+        help="disable the CRC field, which is for the LoRaWAN downlink stream.")
+    p.add_argument("--disable-crc", action="store_false", dest="enable_crc",
+        help="same effect as the --downlink option.")
+    p.add_argument("--cr", action="store", dest="n_cr",
+        type=int, default=1, metavar="NUMBER",
+        help="specify the CR value. default is 1 as LoRaWAN does.")
+    p.add_argument("--preamble", action="store", dest="n_preamble",
+        type=int, default=8, metavar="NUMBER",
+        help="specify the preamble. default is 8 for AS923.")
+    p.add_argument("--duty-cycle", action="store", dest="n_duty_cycle",
+        type=int, default=1, metavar="NUMBER",
+        help="specify the duty cycle in percentage. default is 1 %%.")
+    p.add_argument("-v", action="store_true", dest="f_verbose",
+        default=False,
+        help="enable verbose mode.")
+    p.add_argument("-d", action="append_const", dest="_f_debug", default=[],
+        const=1, help="increase debug mode.")
+
+    args = p.parse_args()
+
+    if args.sf == "FSK":
+        args.n_sf = 0
+    else:
+        try:
+            args.n_sf = int(args.sf)
+        except ValueError:
+            raise ValueError("ERROR: SF must be a number of 'FSK', "
+                             f"but {opt.sf}")
+    args.v_de = False
+    args.debug_level = len(args._f_debug)
+    return args
 
