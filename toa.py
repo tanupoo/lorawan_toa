@@ -21,6 +21,7 @@ if __name__ == "__main__" :
         ret["duty_cycle"] = opt.n_duty_cycle
         ret["t_cycle"] = (ret["t_packet"]/1000.)*(100./ret["duty_cycle"])
         ret["max_packets_day"] = 86400./ret["t_cycle"]
+        ret["raw_datarate"] = opt.n_sf * 4/(4+opt.n_cr) * ret["r_sym"]
         if opt.f_verbose:
             print("PHY payload size    : %d Bytes" % ret["phy_pl_size"])
             print("MAC payload size    : %d Bytes" % ret["mac_pl_size"])
@@ -36,6 +37,8 @@ if __name__ == "__main__" :
             print("Preamble ToA        : %.3f msec" % ret["t_preamble"])
             print("Payload ToA         : %.3f msec" % ret["t_payload"])
             print("Time on Air         : %.3f msec" % ret["t_packet"])
+            print("RAW data rate       : %.3f bps" % ret["raw_datarate"])
+            #print("MAC data rate       : %.3f bps" % ret["mac_datarate"])
             print("Duty Cycle          : %d %%" % ret["duty_cycle"])
             print("Min span of a cycle : %.3f sec" % ret["t_cycle"])
             print("Max Frames per day  : %d frames" % ret["max_packets_day"])
