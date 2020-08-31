@@ -42,5 +42,12 @@ class TestUM(unittest.TestCase):
                       n_cr=4, n_preamble=6)["t_packet"]
         self.assertEqual( toa, 10.816 )
 
+    def test_99(self):
+        toa = get_toa(8, 12, n_bw=500,
+                    enable_auto_ldro=False, enable_ldro=False,
+                    enable_eh=False, enable_crc=True,
+                    n_cr=1, n_preamble=6)["t_packet"]
+        self.assertEqual( toa, 190.464 )
+
 if __name__ == '__main__':
     unittest.main()
