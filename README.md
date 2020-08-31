@@ -100,9 +100,35 @@ Max Frames per day  : 309 frames
 without the -v option, it simply shows the ToA.
 
 ```
-% python toa.py 12 64
+% toa.py 12 64
 2793.472
 ```
+
+There is an example of Semtech LoRa Caluculator Interface in the datasheet.
+If the parameters in that picture apply to toa.py, below is the command line.
+
+```
+% toa.py 12 8 --band-width 500 --cr 1 --disable-auto-ldro --preamble 6 --disable-eh -v
+PHY payload size    : 8 Bytes
+MAC payload size    : 3 Bytes
+Spreading Factor    : 12
+Band width          : 500 kHz
+Low data rate opt.  : disable
+Explicit header     : disable
+CR (coding rate)    : 1 (4/5)
+Symbol Rate         : 122.070 symbol/s
+Symbol Time         : 8.192 msec/symbol
+Preamble size       : 6 symbols
+Packet symbol size  : 13 symbols
+Preamble ToA        : 83.968 msec
+Payload ToA         : 106.496 msec
+Time on Air         : 190.464 msec
+RAW data rate       : 1171.875 bps
+Duty Cycle          : 1 %
+Min span of a cycle : 19.046 sec
+Max Frames per day  : 4536 frames
+```
+
 
 ## graph_as923.py
 
