@@ -10,18 +10,9 @@ if __name__ == "__main__" :
                     enable_ldro=opt.enable_ldro,
                     enable_eh=opt.enable_eh, enable_crc=opt.enable_crc,
                     n_cr=opt.n_cr, n_preamble=opt.n_preamble)
-        ret["phy_pl_size"] = opt.n_size
-        ret["mac_pl_size"] = opt.n_size - 5
-        ret["sf"] = opt.n_sf
-        ret["bw"] = opt.n_bw
-        ret["ldro"] = "enable" if ret["v_DE"] else "disable"
-        ret["eh"] = "enable" if opt.enable_eh else "disable"
-        ret["cr"] = opt.n_cr
-        ret["preamble"] = opt.n_preamble
         ret["duty_cycle"] = opt.n_duty_cycle
         ret["t_cycle"] = (ret["t_packet"]/1000.)*(100./ret["duty_cycle"])
         ret["max_packets_day"] = 86400./ret["t_cycle"]
-        ret["raw_datarate"] = opt.n_sf * 4/(4+opt.n_cr) * ret["r_sym"]
         if opt.f_verbose:
             print("PHY payload size    : %d Bytes" % ret["phy_pl_size"])
             print("MAC payload size    : %d Bytes" % ret["mac_pl_size"])
@@ -32,13 +23,12 @@ if __name__ == "__main__" :
             print("CR (coding rate)    : %d (4/%d)" % (ret["cr"], 4+ret["cr"]))
             print("Symbol Rate         : %.3f symbol/s" % ret["r_sym"])
             print("Symbol Time         : %.3f msec/symbol" % ret["t_sym"])
-            print("Preamble size       : %d symbols" % ret["preamble"])
+            print("Preamble size       : %d symbols" % ret["n_preamble"])
             print("Packet symbol size  : %d symbols" % ret["n_sym_payload"])
             print("Preamble ToA        : %.3f msec" % ret["t_preamble"])
             print("Payload ToA         : %.3f msec" % ret["t_payload"])
             print("Time on Air         : %.3f msec" % ret["t_packet"])
             print("RAW data rate       : %.3f bps" % ret["raw_datarate"])
-            #print("MAC data rate       : %.3f bps" % ret["mac_datarate"])
             print("Duty Cycle          : %d %%" % ret["duty_cycle"])
             print("Min span of a cycle : %.3f sec" % ret["t_cycle"])
             print("Max Frames per day  : %d frames" % ret["max_packets_day"])

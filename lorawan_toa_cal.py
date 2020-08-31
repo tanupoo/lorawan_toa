@@ -92,6 +92,15 @@ def get_toa(n_size, n_sf, n_bw=125, enable_auto_ldro=True, enable_ldro=False,
     ret["n_sym_payload"] = n_payload
     ret["t_payload"] = t_payload
     ret["t_packet"] = round(t_packet, 3)
+    ret["phy_pl_size"] = n_size
+    ret["mac_pl_size"] = n_size - 5
+    ret["sf"] = n_sf
+    ret["bw"] = n_bw
+    ret["ldro"] = "enable" if v_DE else "disable"
+    ret["eh"] = "enable" if enable_eh else "disable"
+    ret["cr"] = n_cr
+    ret["preamble"] = n_preamble
+    ret["raw_datarate"] = n_sf * 4/(4+n_cr) * r_sym
 
     return ret
 
